@@ -1,0 +1,110 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="pid-image">
+  <template>
+    <style>
+      .capture-container {
+        position: relative;
+      }
+
+      video {
+        transform: scaleX(-1);
+      }
+
+      .timer {
+        position: absolute;
+        width: 320px;
+        height: 240px;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        font-size: 50px;
+        color: white;
+        line-height: 240px;
+        text-align: center;
+        text-shadow: 0px 0px 10px rgba(150, 150, 150, 1);
+      }
+
+      .accepted {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background-color: white;
+        border-radius: 50%;
+      }
+
+      .green {
+        --iron-icon-width: 30px;
+        --iron-icon-height: 30px;
+        --iron-icon-fill-color: green;
+      }
+    </style>
+
+    <content></content>
+    <div class="capture-container">
+      <div hidden$="[[pictureTaken]]">
+        <video id="video" width="320" height="240" autoplay></video>
+      </div>
+      <div hidden$="[[!pictureTaken]]">
+        <canvas id="canvas" width="320" height="240"></canvas>
+      </div>
+      <div class="accepted" hidden$="[[!image]]">
+        <iron-icon class="green" icon="check-circle"></iron-icon>
+      </div>
+    </div>
+    <paper-button on-tap="_takePicture" hidden$="[[pictureTaken]]" raised>Take Picture</paper-button>
+    <div hidden$="[[!pictureTaken]]">
+      <paper-button on-tap="_acceptPicture" raised>Accept</paper-button>
+      <paper-button on-tap="_retakePicture" raised>Retake</paper-button>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'pid-image',
+
+      properties: {
+        image: {
+          type: String,
+          notify: true
+        },
+        pictureTaken: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      observers: [
+        '_streamChanged(stream)'
+      ],
+
+      ready: function () {
+        var context = this.$.canvas.getContext('2d');
+        context.translate(320, 0);
+        context.scale(-1, 1);
+      },
+
+      _streamChanged: function (stream) {
+        this.$.video.src = window.URL.createObjectURL(stream);
+      },
+
+      _takePicture: function () {
+        var context = this.$.canvas.getContext('2d');
+        context.drawImage(this.video, 0, 0, 640, 480, 0, 0, 320, 240);
+
+        this.pictureTaken = true;
+      },
+
+      _acceptPicture: function () {
+        this.set('image', this.$.canvas.toDataURL());
+      },
+
+      _retakePicture: function () {
+        this.set('image', null);
+        this.pictureTaken = false;
+      }
+    });
+  </script>
+</dom-module>
