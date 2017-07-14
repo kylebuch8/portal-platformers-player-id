@@ -1,0 +1,6 @@
+{
+  "name": "Portal Platformers Player ID",
+  "short_name": "Player ID",
+  "start_url": "/",
+  "display": "standalone"
+}

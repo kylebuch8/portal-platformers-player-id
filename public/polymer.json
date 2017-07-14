@@ -1,0 +1,14 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/pid-app/pid-app.html",
+  "fragments": [
+    "src/pid-app/pid-image.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "bower.json"
+  ],
+  "includeDependencies": [
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}
