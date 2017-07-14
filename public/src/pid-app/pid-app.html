@@ -13,7 +13,6 @@
     <style>
       :host {
         display: block;
-        height: 100%;
         text-align: center;
       }
 
@@ -26,6 +25,17 @@
         transform: scaleX(-1);
       }
 
+      .container {
+        margin: auto;
+        max-width: 800px;
+        border-radius: 3px;
+      }
+
+      .alert {
+        background: lightblue;
+        padding: 16px;
+      }
+
       .images {
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
@@ -33,11 +43,12 @@
       }
 
       pid-image {
-        margin-right: 16px;
+        max-width: 300px;
+        padding-right: 16px;
       }
 
       pid-image:last-child {
-        margin-right: 0;
+        padding-right: 0;
       }
 
       paper-input {
@@ -68,7 +79,21 @@
     <h1>Portal Platformers - Player ID</h1>
     <video id="video" width="320" height="240" autoplay></video>
     <section>
-      <paper-input label="Full Name" value="{{fullName}}"></paper-input>
+      <div class="container alert">
+        <h3>Instructions</h3>
+        <p>Take pictures of your face for your character in the Portal Platformers game.</p>
+        <div style="text-align: left;">
+          <ol>
+            <li>Enter your name</li>
+            <li>Click the Start Camera button to start your webcam (be sure to accept the permission to use the camera)</li>
+            <li>Take pictures of your face and either accept or reject to take a new pic</li>
+            <li>Once you've entered your name and accepted all three pics, click the Save and Submit button</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <section>
+      <paper-input label="Your Name" value="{{fullName}}"></paper-input>
     </section>
     <div>
       <paper-button on-tap="_initCamera" hidden$="[[initialized]]" raised>Start Camera</paper-button>
@@ -76,16 +101,16 @@
     </div>
     <section class="images">
       <pid-image video="[[video]]" stream="[[stream]]" image="{{images.imageForward}}">
-        <h1>Front</h1>
-        <p>This is the front image</p>
+        <h1>Normal</h1>
+        <p>This image will be used when your player is running or standing still</p>
       </pid-image>
       <pid-image video="[[video]]" stream="[[stream]]" image="{{images.imageAction}}">
         <h1>Action</h1>
-        <p>This is the action image</p>
+        <p>This image will be used when your player jumps</p>
       </pid-image>
       <pid-image video="[[video]]" stream="[[stream]]" image="{{images.imageDead}}">
         <h1>Dead :(</h1>
-        <p>This is the dead image</p>
+        <p>This image will be used when your player dies</p>
       </pid-image>
     </section>
     <section>
